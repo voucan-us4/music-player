@@ -18,3 +18,5 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
+
+3. Your instance of Arcora should now be deployed to http://localhost:8080 
