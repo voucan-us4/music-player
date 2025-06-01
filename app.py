@@ -10,7 +10,7 @@ def hello():
 @app.route('/search', methods=['GET'])
 def search_youtube_api():
     search_query = request.args.get('query')
-    limit = int(request.args.get('limit', 1))  # Default limit is 5 if not specified
+    limit = int(request.args.get('limit', 1))
 
     if not search_query:
         return jsonify({'error': 'Query parameter "query" is required'}), 400
