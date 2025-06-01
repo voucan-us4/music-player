@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      },
+      "dest": "app.py"
+    }
+  ]
+}
