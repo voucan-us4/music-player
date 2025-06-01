@@ -25,15 +25,7 @@ def search_youtube_api():
             thumbnails = channel.get('thumbnails', [])
 
             formatted_result = {
-                'title': video['title'],
-                'link': video['link'],
                 'videoId': video['id'],
-                'thumbnail': thumbnails[0]['url'] if thumbnails else None,
-                'duration': video['duration'] if 'duration' in video and video['duration'] else 'Not Available',
-                'uploader': channel.get('name', None),
-                'channel_icon': thumbnails[0]['url'] if thumbnails else None,
-                'channel_link': channel.get('link', None),
-                'views': video['viewCount']['short'] if 'viewCount' in video and 'short' in video['viewCount'] else 'Not Available',
             }
             formatted_results.append(formatted_result)
 
