@@ -18,3 +18,4 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
+3. Your instance of Arcora should now be deployed to http://localhost:5000 (i dont even know if its going to this port, it just did it for me, i like did a thing in app.py, but i have no idea what im doing 🙏)
