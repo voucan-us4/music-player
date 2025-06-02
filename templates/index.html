@@ -319,6 +319,13 @@
         font-size: 16px;
         line-height: 1.6;
       }
+
+      #lyricsContent {
+        overflow-y: auto;
+        max-height: 100%;
+        scroll-behavior: smooth;
+        position: relative;
+      }
       
       .lyrics-content::-webkit-scrollbar {
         width: 4px;
@@ -916,7 +923,10 @@
 
        if (i === activeIndex) {
          el.classList.add("active");
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          lyricsContent.scrollTo({
+            top: el.offsetTop - lyricsContent.clientHeight / 2 + el.clientHeight / 2,
+            behavior: "smooth"
+           });
         } else if (i === activeIndex - 1) {
           el.classList.add("prev");
         } else if (i === activeIndex + 1) {
