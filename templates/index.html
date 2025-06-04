@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <!--------------------------------------* 
 *
@@ -13,7 +11,7 @@
 *
 *  developed by technonyte0
 *  https://techno.pics
-*  Edited version of V1 by Voucan: Minor CSS Changed, Lyrics Sync, Loop, Time Buttons, Vercel Deployment
+*  Edited version of V1 by Voucan: Minor CSS Changed, Lyrics Sync, Loop, Time Buttons, Vercel Deployment, Key Controls
 *--------------------------------------->
 <html lang="en">
   <head>
@@ -211,19 +209,41 @@
       .controls {
         display: flex;
         align-items: center;
-        gap: 20px;
         margin-bottom: 18px;
+        position: relative;
       }
       .controls i {
         font-size: 32px;
-        cursor: pointer;
         transition: 0.12s ease;
+        position: relative;
+        margin: 0 8px;
+        cursor: pointer;
       }
       .controls i:active {
         transform: scale(0.94);
       }
       .controls i:hover {
         color: #bfbfbf;
+      }
+      .controls i::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 10;
+      }
+      .controls i:hover::after {
+        opacity: 1;
       }
       .seekbar {
         height: 6px;
@@ -395,6 +415,62 @@
         margin-top: 15px;
       }
 
+      .otherbuttonscontainer i {
+        transition: 0.12s ease;
+        position: relative;
+        margin: 0 8px;
+        cursor: pointer;
+      }
+
+       .otherbuttonscontainer i::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 10;
+      }
+      .otherbuttonscontainer i:hover::after {
+        opacity: 1;
+      }
+
+      .lyrics-toggle i {
+        transition: 0.12s ease;
+        position: relative;
+        margin: 0 8px;
+        cursor: pointer;
+      }
+
+       .lyrics-toggle i::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: white;
+        padding: 5px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        font-size: 12px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease-in-out;
+        z-index: 10;
+      }
+      .lyrics-toggle i:hover::after {
+        opacity: 1;
+      }
+
       .lyric-line {
         transition: all 0.2s ease;
         color: #999;
@@ -444,7 +520,7 @@
     <div class="player">
       <div class="album-art" id="album">
         <img
-          src="https://raw.githubusercontent.com/voucan-us4/music-player/refs/heads/main/empty-art.png"
+          src="/storage/images/empty-art.png"
           alt="Album"
           id="albumCover"
           crossorigin="anonymous"
@@ -454,12 +530,12 @@
         <div class="track-title" id="trackTitle">Not Playing</div>
         <div class="artist" id="artistName">Not Playing</div>
         <div class="controls">
-          <i id="loopToggle" class="fa-solid fa-repeat control-btn"></i>
-          <i class="fas fa-backward" id="backward10"></i>
-          <i class="fa-solid fa-chevron-left" id="backward5"></i>
-          <i id="playPause" class="fa-solid fa-play fa-lg control-btn""></i>
-          <i class="fa-solid fa-chevron-right" id="forward5"></i>
-          <i class="fas fa-forward" id="forward10"></i>
+          <i id="loopToggle" class="fa-solid fa-repeat" data-tooltip="Loop (L)"></i>
+          <i class="fas fa-backward" id="backward10" data-tooltip="Backwards 10 seconds"></i>
+          <i class="fa-solid fa-chevron-left" id="backward5" data-tooltip="Backwards 5 seconds (←)"></i>
+          <i id="playPause" class="fa-solid fa-play fa-lg" data-tooltip="Pause (K)"></i>
+          <i class="fa-solid fa-chevron-right" id="forward5" data-tooltip="Forwards 5 seconds (→)"></i>
+          <i class="fas fa-forward" id="forward10" data-tooltip="Forwards 10 seconds"></i>
         </div>
         <div id="seekbar" class="seekbar"><div id="progress"></div></div>
         <div class="timecodes">
@@ -484,14 +560,13 @@
 
     <div class="otherbuttonscontainer">
 <div>
-          <i id="volumeBtn" class="fa-solid fa-volume-high control-btn"></i>
+          <i id="volumeBtn" class="fa-solid fa-volume-high" data-tooltip="Mute (m)"></i>
 </div>
 
     <!-- tralalero tralala -->
-    <div class="lyrics-toggle" id="lyricsToggle">
-      <i class="fa-solid fa-align-left"></i>
+    <div id="lyricsToggle">
+      <i class="lyrics-toggle fa-solid fa-align-left" data-tooltip="Toggle Lyrics (t)"></i>
     </div>
-</div>
       <!-- TUNG TUNG TUGN TUNG TUNG TUNG TUNG SAHUR -->
       <div class="lyrics-info" id="lyricsInfo">
         <div class="lyrics-header">
@@ -523,7 +598,7 @@
         </script>
 
     <script>
-    const searchInput = document.getElementById("searchInput");
+        const searchInput = document.getElementById("searchInput");
         const searchResults = document.getElementById("searchResults");
         const trackTitle = document.getElementById("trackTitle");
         const artistName = document.getElementById("artistName");
@@ -551,7 +626,7 @@
         let currentTrack = {
           title: "Not Playing",
           artist: "Not Playing",
-          artwork: "https://raw.githubusercontent.com/voucan-us4/music-player/refs/heads/main/empty-art.png",
+          artwork: "/storage/images/empty-art.png",
         };
         
         const colorThief = new ColorThief();
@@ -693,11 +768,11 @@
         
           if (isMuted) {
             player.unMute();
-            volumeBtn.className = "fa-solid fa-volume-high control-btn";
+            volumeBtn.className = "fa-solid fa-volume-high";
             isMuted = false;
           } else {
             player.mute();
-            volumeBtn.className = "fa-solid fa-volume-xmark control-btn";
+            volumeBtn.className = "fa-solid fa-volume-xmark";
             isMuted = true;
           }
         }
@@ -866,12 +941,12 @@
           album.style.display = "none";
           lyricsInfo.style.display = "flex";
           fetchLyrics(currentTrack.artist, currentTrack.title);
-          lyricsToggle.innerHTML = '<i class="fa-solid fa-music"></i>';
+          lyricsToggle.innerHTML = '<i id="lyricsToggle" class="lyrics-toggle fa-solid fa-music" data-tooltip="Toggle Lyrics (t)"></i>';
         } else {
           playerInfo.style.display = "flex";
           album.style.display = "flex";
           lyricsInfo.style.display = "none";
-          lyricsToggle.innerHTML = '<i class="fa-solid fa-align-left"></i>';
+          lyricsToggle.innerHTML = '<i class="lyrics-toggle fa-solid fa-align-left" data-tooltip="Toggle Lyrics (t)"></i>';
         }
       });
       
@@ -1078,7 +1153,7 @@
       let isLooping = false;
       loopToggle.addEventListener("click", () => {
         isLooping = !isLooping;
-        loopToggle.className = isLooping ? "fa-solid fa-repeat-1 control-btn" : "fa-solid fa-repeat control-btn";
+        loopToggle.className = isLooping ? "fa-solid fa-repeat-1" : "fa-solid fa-repeat";
       });
       function onPlayerStateChange(event) {
         console.log("Player state changed:", event.data);
@@ -1097,5 +1172,49 @@
         }
       }
     </script>
+            <script>
+//key stuff
+          document.addEventListener("keydown", function (e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+           if (e.key.toLowerCase() === "m") {
+              toggleMute();
+           }
+          });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+           if (e.key.toLowerCase() === "t") {
+              lyricsToggle.click()
+           }
+          });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+           if (e.key.toLowerCase() === "l") {
+              loopToggle.click()
+           }
+          });
+
+          document.addEventListener("keydown", function (e) {
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+           if (e.key.toLowerCase() === "k") {
+              playPauseBtn.click()
+           }
+
+      if (e.key === "ArrowRight" && player && typeof player.getCurrentTime === "function") {
+           const currentTime = player.getCurrentTime();
+           player.seekTo(currentTime + 5, true);
+         }
+
+      if (e.key === "ArrowLeft" && player && typeof player.getCurrentTime === "function") {
+           const currentTime = player.getCurrentTime();
+           player.seekTo(currentTime - 5, true);
+         }
+    });
+        </script>
 </body>
 </html>
